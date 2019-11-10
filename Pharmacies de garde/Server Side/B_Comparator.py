@@ -61,10 +61,12 @@ duty = pickle.load(open("C:/Users/marwane/Documents/Projets Python/Pharmacie_de_
 
 print("############################ \n \n")
 
+#list to store all the concerned rows
 leventab = []
 
+# All this script loops through both tables to find correnspondance
 for i, row_i in duty.iterrows():
-    #print("Index i : "+str(i))
+    #temporary variable to get the highest levenshtein ratio
     high = 0
 
     for j,row_j in df.iterrows():
@@ -75,28 +77,24 @@ for i, row_i in duty.iterrows():
             lev = row_j['pharmacie']
 
     print(" Lev : "+str(lev)+", High : "+str(high))
-    leventab.append(lev)
+    #print(df.loc[df['pharmacie'] == lev])
+    leventab.append(df.loc[df['pharmacie'] == lev])
 print(" *** Loop Done *** ")
 
+# Concatenate the results and end up with a final pandas Dataframe with resetted indexes
 print(leventab)
+neo_df = pd.concat(leventab)
+neo_df.reset_index(drop=True,inplace=True)
+
+print(neo_df)
 
 
+""" Export the csv file result """
+
+neo_df.to_csv("C:/Users/marwane/Documents/Projets Python/Pharmacie_de_Garde/Comparator091119/neo_pdg.csv",sep=";",header=True,encoding='utf-8')
+
+""" Export the json file result """
+neo_df.to_json("C:/Users/marwane/Documents/Projets Python/Pharmacie_de_Garde/Comparator091119/neo_pdg.json",orient="records")
 
 
-
-
-
-#
-# print("############################ \n \n")
-#
-# for i, row_i in df.iterrows():
-#     high = 0
-#     for j,row_j in duty.iterrows():
-#         print(levenshtein(row_i['pharmacie'].lower(),row_j['nom'].lower(),ratio_calc=True))
-#         ratio = levenshtein(row_i['pharmacie'].lower(),row_j['nom'].lower(),ratio_calc=True)
-#         if ratio > high:
-#             high = ratio
-#             lev = row_i['pharmacie']
-#     print(" Lev : "+str(lev)+", High : "+str(high))
-# print(" *** Loop Done *** ")
-#
+print(" Exported !!! ")
