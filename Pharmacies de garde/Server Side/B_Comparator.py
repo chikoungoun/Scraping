@@ -64,6 +64,9 @@ print("############################ \n \n")
 #list to store all the concerned rows
 leventab = []
 
+adresses = []
+telephones = []
+quartiers = []
 # All this script loops through both tables to find correnspondance
 for i, row_i in duty.iterrows():
     #temporary variable to get the highest levenshtein ratio
@@ -79,12 +82,27 @@ for i, row_i in duty.iterrows():
     print(" Lev : "+str(lev)+", High : "+str(high))
     #print(df.loc[df['pharmacie'] == lev])
     leventab.append(df.loc[df['pharmacie'] == lev])
+
+    # Get the data from Duty
+    adresses.append(row_i['adresse'])
+    telephones.append(row_i['telephone'])
+    quartiers.append(row_i['quartier'])
 print(" *** Loop Done *** ")
 
 # Concatenate the results and end up with a final pandas Dataframe with resetted indexes
 print(leventab)
 neo_df = pd.concat(leventab)
 neo_df.reset_index(drop=True,inplace=True)
+
+# Adding the extra data from the on duty pharmacies
+neo_df['adresse'] = adresses
+neo_df['quartier'] = quartiers
+neo_df['telephone'] = telephones
+
+
+#Sort data following Neighborhoods
+neo_df.sort_values(by='quartier',inplace=True)
+
 
 print(neo_df)
 
