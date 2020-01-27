@@ -10,7 +10,7 @@ def confirmation_mail(scrape_file):
     temps = str(day)+"    "+str(hour)
 
     EMAIL_ADDRESS = 'gharwissen@gmail.com'
-    EMAIL_PASSWORD = 'Alabasta_44'
+    EMAIL_PASSWORD = 'xxxxxx'
 
 
     with smtplib.SMTP('smtp.gmail.com',587) as smtp:
